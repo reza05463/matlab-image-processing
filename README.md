@@ -1,70 +1,68 @@
-# MATLAB Image Processing
+[**فارسی**](README.md) | [English](README.en.md)
 
-[**English**](README.md) · [**فارسی ←**](README.fa.md)
+<div dir="rtl">
 
-**Brain-image difference and Moon-image sharpening — university coursework by Reza Ranjbar.**
+# پردازش تصویر با متلب
 
-This project contains two image-processing exercises, their original supplied inputs, reusable MATLAB functions, and reproducible result figures. Every file is in the repository root, so there are no nested asset paths.
+برای درس پردازش تصویر، روی دو تمرین کار کردم: مقایسه تصاویر مغز و واضح‌سازی تصویر ماه با فیلتر لاپلاسین.
 
-## 1. Absolute image difference
+کدهای متلب، تصاویر استفاده‌شده در تمرین‌ها و خروجی‌ها را در این مخزن قرار داده‌ام. با اجرای دمو می‌توانید نتایج را دوباره تولید کنید. همه فایل‌ها در پوشه اصلی مخزن هستند.
 
-The first two panels show the supplied brain images. The third shows their absolute pixel-intensity difference.
+## ۱. اختلاف مطلق تصاویر
 
-![Coursework brain inputs A and B, followed by their absolute difference](brain-difference-result.png)
+دو بخش اول، تصاویر مغز استفاده‌شده در تمرین را نشان می‌دهند. بخش سوم، اختلاف مطلق شدت پیکسل‌های آن‌ها را نمایش می‌دهد.
 
-[Open the brain comparison image](brain-difference-result.png)
+![دو تصویر ورودی پروژه و اختلاف مطلق آن‌ها](brain-difference-result.png)
 
-The original filenames imply diagnostic labels, but those labels have not been independently verified. This exercise compares image intensities; it does not diagnose disease. Resizing an image is not anatomical registration.
+[باز کردن تصویر مقایسه مغز](brain-difference-result.png)
 
-## 2. Laplacian sharpening
+نام فایل‌های اصلی به برچسب‌های تشخیصی اشاره می‌کند، اما این برچسب‌ها به‌صورت مستقل تأیید نشده‌اند. این تمرین، مقایسه شدت پیکسل‌ها است و بیماری را تشخیص نمی‌دهد. تغییر اندازه تصویر نیز به معنای هم‌ترازی ساختارهای آناتومیکی نیست.
 
-The panels show the supplied Moon image, its signed Laplacian response rescaled for display, and the sharpened result.
+## ۲. واضح‌سازی با لاپلاسین
 
-![Original Moon image, Laplacian response, and sharpened result](moon-sharpening-result.png)
+سه بخش، تصویر اصلی ماه، پاسخ لاپلاسین با مقیاس نمایشی تنظیم‌شده و نتیجه واضح‌سازی را نشان می‌دهند.
 
-[Open the Moon sharpening image](moon-sharpening-result.png)
+![تصویر اصلی ماه، پاسخ لاپلاسین و خروجی واضح‌سازی](moon-sharpening-result.png)
 
-The kernel is `[0 1 0; 1 -4 1; 0 1 0]`. The function uses replicated boundaries, subtracts the response from the grayscale input, and clips the output to [0,1]. Sharpening can amplify noise; display scaling does not change the computed response.
+[باز کردن تصویر واضح‌سازی ماه](moon-sharpening-result.png)
 
-## Run the project
+در این روش، پاسخ کرنل چهارهمسایگی از تصویر خاکستری کم و مقدار خروجی به بازه صفر تا یک محدود می‌شود. در مرز تصویر از تکرار پیکسل‌های کناری استفاده می‌شود. واضح‌سازی ممکن است نویز را تقویت کند؛ تغییر مقیاس برای نمایش، مقادیر محاسبه‌شده را تغییر نمی‌دهد.
 
-Requires **MATLAB and Image Processing Toolbox**. Tested with MATLAB R2025b.
+## اجرای پروژه
 
-Download this repository, open its folder in MATLAB, and run:
+به **MATLAB و Image Processing Toolbox** نیاز دارید. این نسخه با MATLAB R2025b آزمایش شده است.
+
+مخزن را دریافت کنید، پوشه آن را در متلب باز کنید و این دو دستور را اجرا کنید:
+
+</div>
 
 ```matlab
 verify_examples
 run_demo
 ```
 
-The demo regenerates `brain-difference-result.png` and `moon-sharpening-result.png` in the same folder. It uses the bundled images; no extra data download is required.
+<div dir="rtl">
 
-To process your own images:
+دستور دوم، فایل‌های `brain-difference-result.png` و `moon-sharpening-result.png` را با تصاویر ورودی موجود، در همان پوشه بازتولید می‌کند. نیازی به دریافت داده اضافی نیست.
 
-```matlab
-[difference, first, second] = image_difference('first.png', 'second.png');
-[sharpened, response, gray] = laplacian_sharpen('my-image.png');
-```
+## ساختار کد
 
-`to_grayscale` accepts an image filename or array. RGB images become grayscale, integer inputs are normalized with `im2double`, and floating-point inputs must already be finite and in [0,1]. When sizes differ, `image_difference` resizes the second grayscale image using bilinear interpolation.
-
-## Files
-
-| File | Purpose |
+| فایل | کاربرد |
 |---|---|
-| `image_difference.m` | Absolute difference between two images |
-| `laplacian_sharpen.m` | Laplacian response and sharpening |
-| `to_grayscale.m` | Shared image loading, conversion and validation |
-| `run_demo.m` | Regenerate both result figures |
-| `verify_examples.m` | Controlled correctness checks |
-| `normalBrainGray.jpg`, `alzaimerBrainGray.jpg` | Original coursework comparison inputs |
-| `Laplacian.tif` | Original coursework Moon image |
-| `brain-difference-result.png`, `moon-sharpening-result.png` | Generated result figures |
+| `image_difference.m` | محاسبه اختلاف مطلق دو تصویر |
+| `laplacian_sharpen.m` | محاسبه پاسخ لاپلاسین و واضح‌سازی |
+| `to_grayscale.m` | خواندن، تبدیل و اعتبارسنجی تصویر |
+| `run_demo.m` | تولید دوباره تصاویر نتیجه |
+| `verify_examples.m` | بررسی صحت با ورودی‌های کنترل‌شده |
 
-The checks cover constant images, impulse response, identical images, mismatched dimensions, RGB conversion, and invalid inputs. See [verification](VERIFICATION.md).
+تصاویر رنگی به خاکستری تبدیل می‌شوند. ورودی‌های اعشاری باید مقادیر متناهی در بازه صفر تا یک داشته باشند. اگر اندازه‌ها متفاوت باشند، تصویر دوم با درون‌یابی دوخطی به اندازه تصویر اول تغییر می‌کند.
 
-## Attribution
+آزمون‌ها شامل تصویر ثابت، پاسخ به ضربه، تصاویر یکسان، تفاوت ابعاد، تبدیل RGB و رد ورودی نامعتبر هستند. [گزارش بررسی](VERIFICATION.md) را ببینید.
 
-Original coursework: **Reza Ranjbar**. The original scripts were named `substraction.m` and `laplacian.m`. Refactoring, tests, bilingual documentation and publication preparation were completed with AI assistance.
+## پیشینه پروژه و منابع تصاویر
 
-The input images were supplied with the coursework. Their upstream source and license are unrecorded; no new image license or dataset ownership is asserted. See [input provenance](INPUTS.md).
+اسکریپت‌های اولیه‌ام `substraction.m` و `laplacian.m` نام داشتند. در نسخه فعلی، پردازش‌ها در توابع جدا قرار دارند و دمو، بررسی صحت و مستندات فارسی و انگلیسی هم اضافه شده‌اند.
+
+تصاویر ورودی همراه پروژه ارائه شده‌اند. منبع اولیه و مجوز آن‌ها در فایل‌های موجود ثبت نشده است و این مخزن مجوز تازه‌ای برای تصاویر تعیین نمی‌کند. [توضیحات تصاویر ورودی](INPUTS.md).
+
+</div>
